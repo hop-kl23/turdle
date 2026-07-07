@@ -108,3 +108,61 @@ h1 {
     font-size: 0; /* 💡 This hides any text inside the tile completely! */
     border: 1px solid #3a3a3c;
 }
+
+@media (max-width: 768px) {
+    .arena {
+        flex-direction: column; /* Stack boards vertically on mobile */
+        align-items: center;
+        gap: 20px;
+    }
+    
+    #opponent-board .tile {
+        width: 25px; /* Shrink opponent tracking map slightly on phone viewports */
+        height: 25px;
+    }
+}
+
+/* --- 🆕 MOBILE KEYBOARD STYLES --- */
+#keyboard-container {
+    margin: 30px auto 0 auto;
+    max-width: 500px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    touch-action: manipulation; /* Prevents double-tap zoom delay on mobile browsers */
+}
+
+.key-btn {
+    flex: 1;
+    height: 50px;
+    max-width: 45px;
+    background-color: #818384;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: background-color 0.1s ease;
+}
+
+.key-btn:active {
+    background-color: #565758;
+}
+
+/* Make special wide buttons for functionality keys */
+.key-btn.wide-key {
+    max-width: 65px;
+    font-size: 0.85rem;
+}

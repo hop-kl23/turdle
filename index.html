@@ -21,21 +21,27 @@
       <button id="join-btn">Join Burrow</button>
     </div>
 
-    <div id="game-screen" style="display: none">
-      <h2>Burrow Code: <span id="display-room-code"></span></h2>
-      <p id="status-message">Waiting for an opponent to hop in...</p>
-
-      <div class="arena">
-        <div class="board-container">
-          <h3>Your Grid 🐇</h3>
-          <div id="game-board"></div>
+    <div id="game-screen" style="display: none;">
+        <h2>Burrow Code: <span id="display-room-code"></span></h2>
+        <p id="status-message">Waiting for an opponent to hop in...</p>
+        
+        <div class="arena">
+            <div class="board-container">
+                <h3>Your Grid 🐇</h3>
+                <div id="game-board"></div>
+            </div>
+            
+            <div class="board-container">
+                <h3>Opponent Progress 🐢</h3>
+                <div id="opponent-board"></div>
+            </div>
         </div>
 
-        <div class="board-container">
-          <h3>Opponent Progress 🐢</h3>
-          <div id="opponent-board"></div>
+        <div id="keyboard-container">
+            <div class="keyboard-row" id="kb-row-1"></div>
+            <div class="keyboard-row" id="kb-row-2"></div>
+            <div class="keyboard-row" id="kb-row-3"></div>
         </div>
-      </div>
     </div>
 
     <script src="app.js"></script>

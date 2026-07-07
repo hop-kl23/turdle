@@ -23,6 +23,12 @@ const roomInput = document.getElementById("room-input");
 const displayRoomCode = document.getElementById("display-room-code");
 const statusMessage = document.getElementById("status-message");
 
+const KB_ROWS = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+    ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"] // ⌫ acts as Backspace
+];
+
 // --- LOBBY ACTIONS ---
 createBtn.addEventListener("click", () => {
   socket.emit("create_room");
@@ -94,6 +100,46 @@ function generateGameBoard() {
     opponentBoard.appendChild(oppRowDiv);
   }
 }
+
+function generateKeyboard() {
+    // Loop through our array blueprint to append individual click triggers
+    for (let i = 0; i < KB_ROWS.length; i++) {
+        const rowContainer = document.getElementById(`kb-row-${i + 1}`);
+        rowContainer.innerHTML = ""; // Clear old frames if refreshing
+
+        KB_ROWS[i].forEach(keyText => {
+            const btn = document.createElement('button');
+            btn.classList.add('key-btn');
+            btn.innerText = keyText;
+
+            // Give wider sizing profile overrides to functionality buttons
+            if (keyText === 'ENTER' || keyText === '⌫') {
+                btn.classList.add('wide-key');
+            }
+
+            // Tap behavior routing engine
+            btn.addEventListener('click', () => {
+                if (!document.getElementById('game-board').hasChildNodes()) return;
+
+                if (keyText === 'ENTER') {
+                    submitGuess();
+                } else if (keyText === '⌫') {
+                    deleteLetter();
+                } else {
+                    typeLetter(keyText);
+                }
+            });
+
+            rowContainer.appendChild(btn);
+        });
+    }
+}
+
+socket.on('game_start', (data) => {
+    // ... your other setup variables ...
+    generateGameBoard();
+    generateKeyboard(); // 🆕 Build the touch controls!
+});
 
 // --- TYPING MECHANICS ---
 window.addEventListener("keydown", (e) => {
