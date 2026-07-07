@@ -1,4 +1,8 @@
-const socket = io('http://localhost:3000');
+// 🆕 THE PRO PROD SWITCH: If running online, connect to our live URL, otherwise use localhost.
+const socket = io(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:3000' 
+    : 'https://YOUR-BACKEND-APP-NAME.onrender.com' // We will replace this URL in Step 3!
+);
 
 // Game states
 const ROW_COUNT = 6;
