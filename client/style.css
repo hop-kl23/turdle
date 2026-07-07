@@ -1,0 +1,110 @@
+/* General page styling to make it look clean and modern */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121213; /* Dark mode background */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+#lobby-screen{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+h1 {
+    margin-bottom: 5px;
+}
+
+/* The container holding our grid rows */
+#game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Tiny gap between rows */
+    margin-top: 20px;
+}
+
+/* A row contains exactly 5 letter tiles */
+.grid-row {
+    display: grid;
+    grid-template-columns: repeat(5, 60px); /* 5 columns, 60px wide each */
+    gap: 5px; /* Tiny gap between tiles */
+}
+
+/* Individual letter tile styling */
+.tile {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #3a3a3c; /* Dark gray border */
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase; /* Ensures all typed text shows as CAPITAL */
+    user-select: none; /* Prevents text highlighting while playing */
+    transition: background-color 0.3s elements, border-color 0.3s;
+}
+
+/* Wordle State Colors */
+.tile.correct {
+    background-color: #538d4e; /* Green */
+    border-color: #538d4e;
+}
+
+.tile.present {
+    background-color: #b59f3b; /* Yellow */
+    border-color: #b59f3b;
+}
+
+.tile.absent {
+    background-color: #3a3a3c; /* Gray */
+    border-color: #3a3a3c;
+}
+
+/* Simple animation pop when a user types a letter */
+.tile.pop {
+    transform: scale(1.05);
+    border-color: #565758;
+}
+
+/* 🆕 Arranges your board and opponent board horizontally */
+.arena {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board-container h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #a7a7a8;
+}
+
+/* 🆕 The opponent container holding their grid rows */
+#opponent-board {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Opponent tiles are smaller and hide letters completely */
+#opponent-board .tile {
+    width: 35px;
+    height: 35px;
+    font-size: 0; /* 💡 This hides any text inside the tile completely! */
+    border: 1px solid #3a3a3c;
+}

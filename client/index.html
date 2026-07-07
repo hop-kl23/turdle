@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turdle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+    
+    <div id="lobby-screen">
+        <h1>🐢 Turdle Multiplayer</h1>
+        <button id="create-btn">Create Private Burrow</button>
+        <p>— OR —</p>
+        <input type="text" id="room-input" placeholder="Enter 4-Letter Code" maxlength="4">
+        <button id="join-btn">Join Burrow</button>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <h2>Burrow Code: <span id="display-room-code"></span></h2>
+        <p id="status-message">Waiting for an opponent to hop in...</p>
+        
+        <div class="arena">
+            <div class="board-container">
+                <h3>Your Grid 🐇</h3>
+                <div id="game-board"></div>
+            </div>
+            
+            <div class="board-container">
+                <h3>Opponent Progress 🐢</h3>
+                <div id="opponent-board"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
