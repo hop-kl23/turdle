@@ -63,7 +63,7 @@ loadFullDictionary();
 const activeRooms = {};
 
 io.on("connection", (socket) => {
-  console.log("A rabbit crawled into the server:", socket.id);
+  console.log("A player crawled into the server:", socket.id);
 
   // --- EVENT 1: CREATING A NEW ROOM ---
   socket.on("create_room", () => {
@@ -108,9 +108,64 @@ io.on("connection", (socket) => {
     setTimeout(() => {
       io.to(roomCode).emit("game_start", {
         roomCode: roomCode,
-        msg: "Both rabbits are ready! Start racing!",
+        msg: "Both players are ready! Start racing!",
       });
     }, 50);
+  });
+
+  socket.on("leave_room", (roomCode) => {
+      if (!roomCode) return;
+
+      console.log(`Player ${socket.id} is leaving room: ${roomCode}`);
+
+      // 1. Force the physical socket connection out of the socket.io room network
+      socket.leave(roomCode);
+
+      // 2. Alert anyone remaining in the room channel
+      socket.to(roomCode).emit("opponent_left", {
+          msg: "Your opponent left the room. Returning to lobby..."
+      });
+
+      // 3. 🚨 FIX: Aggressive backend state cleanup
+      // Check if your backend global rooms state tracker object exists
+      if (typeof rooms !== 'undefined' && activeRooms[roomCode]) {
+          
+          // If your tracker uses a `.players` array to track socket IDs:
+          if (activeRooms[roomCode].players) {
+              // Filter out the player who just left
+              activeRooms[roomCode].players = activeRooms[roomCode].players.filter(id => id !== socket.id);
+              
+              // If NO players are left in the room array, drop the room entirely!
+              if (activeRooms[roomCode].players.length === 0) {
+                  delete activeRooms[roomCode];
+                  console.log(`🧼 Room ${roomCode} has been completely wiped from memory.`);
+              } else {
+                  // If an opponent is still inside, reset the match states so it's open again
+                  activeRooms[roomCode].gameStarted = false;
+              }
+          } else {
+              // Fallback safety catch: If your room structure doesn't use an array,
+              // just delete the room code altogether so it resets perfectly.
+              delete activeRooms[roomCode];
+              console.log(`🧼 Room ${roomCode} reset fallback triggered.`);
+          }
+      }
+  });
+
+  // --- SAFEGUARD: Handle players closing their tab/disconnecting unexpectedly ---
+  socket.on("disconnecting", () => {
+      for (const roomCode of socket.rooms) {
+          if (roomCode !== socket.id) {
+              socket.to(roomCode).emit("opponent_left", {
+                  msg: "Your opponent disconnected. Returning to lobby..."
+              });
+              
+              // 🚨 Wipe memory on hard disconnect drop too
+              if (typeof rooms !== 'undefined' && activeRooms[roomCode]) {
+                  delete activeRooms[roomCode];
+              }
+          }
+      }
   });
 
   // --- EVENT 3: PROCESSING A PLAYER'S GUESS ---
@@ -180,7 +235,7 @@ io.on("connection", (socket) => {
     if (isWinningGuess) {
       io.to(roomCode).emit("game_over", {
         winner: socket.id,
-        msg: `🎉 A rabbit cracked the code! Word was ${secret}.`,
+        msg: `🎉 A player cracked the code! Word was ${secret}.`,
       });
 
       setTimeout(() => {
@@ -193,7 +248,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("A rabbit left the server:", socket.id);
+    console.log("A player left the server:", socket.id);
   });
 });
 
