@@ -1,8 +1,8 @@
 /* General page styling to make it look clean and modern */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121213; /* Dark mode background */
-    color: #ffffff;
+    background-color: #151e18;
+    color: #f1f5f2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,23 +10,81 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-#lobby-screen{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+/* --- FALLING LETTERS CANVAS --- */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Puts it directly behind your content */
+    background-color: #121213; /* Your base dark background */
 }
+#lobby-screen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Keeps everything dead center horizontally */
+    justify-content: center; /* Keeps everything centered vertically */
+    text-align: center;
+    width: 100%;
+    max-width: 400px;        /* Keeps the buttons and forms neatly bound */
+    margin: 0 auto;          /* Secondary safeguard for absolute center */
+    gap: 15px;
+}
+
+#create-btn, #join-btn {
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    
+    /* Cozy Earthy colors (adjust these if you went with the Ocean theme!) */
+    background-color: #4b8559; /* Moss Green */
+    color: #ffffff;
+    
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth hover state for desktop players */
+#create-btn:hover, #join-btn:hover {
+    background-color: #5da46e; /* Slightly lighter moss green */
+    transform: translateY(-2px); /* Gentle lift effect */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive feedback when tapped on mobile */
+#create-btn:active, #join-btn:active {
+    transform: translateY(1px); /* Pressed-down feeling */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 h1 {
-    margin-bottom: 5px;
+    font-family: "NYTKarnakCondensed";
+    font-size: 4.5em;
+}
+
+#room-input{
+    font-family: sans-serif;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: hsl(135, 45%, 69%);
+    color:hsl(140, 17%, 13%);
+    font-weight: bold;
+    text-align: center;
+}
+#room-input::placeholder {
+  color:hsl(140, 17%, 13%); 
+  opacity: 1;    
 }
 
 /* The container holding our grid rows */
-#game-board {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Tiny gap between rows */
-    margin-top: 20px;
-}
+
 
 /* A row contains exactly 5 letter tiles */
 .grid-row {
@@ -39,7 +97,7 @@ h1 {
 .tile {
     width: 60px;
     height: 60px;
-    border: 2px solid #3a3a3c; /* Dark gray border */
+    border: 2px solid grey; /* Dark gray border */
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -85,7 +143,8 @@ h1 {
 .board-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Force elements tightly inward */
+    text-align: center
 }
 
 .board-container h3 {
@@ -94,20 +153,39 @@ h1 {
     color: #a7a7a8;
 }
 
-/* 🆕 The opponent container holding their grid rows */
-#opponent-board {
+
+/* --- 🟢 CLEAN LAYOUTS FOR BOTH BOARDS --- */
+
+/* Both boards stack their rows vertically with a clean gap */
+#game-board, #opponent-board {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 5px; /* Gap between rows */
+    margin-top: 20px;
+}
+
+/* Individual rows in BOTH boards contain exactly 5 tiles */
+.grid-row {
+    display: grid;
+    grid-template-columns: repeat(5, 60px); /* Your default player size */
+    gap: 5px; /* Gap between tile columns */
+}
+
+/* 🐢 OPPONENT BOARD SPECIFIC OVERRIDES */
+/* Set the row width of the opponent board smaller so they sit compactly */
+#opponent-board .grid-row {
+    grid-template-columns: repeat(5, 35px); /* Forces small columns with NO extra space */
+    gap: 4px; /* Tight gap for smaller tiles */
 }
 
 /* Opponent tiles are smaller and hide letters completely */
 #opponent-board .tile {
     width: 35px;
     height: 35px;
-    font-size: 0; /* 💡 This hides any text inside the tile completely! */
-    border: 1px solid #3a3a3c;
+    font-size: 0; /* Hides any text inside the tile completely! */
+    border: 1px solid rgb(109, 109, 109);
 }
+
 
 @media (max-width: 768px) {
     .arena {
@@ -116,8 +194,14 @@ h1 {
         gap: 20px;
     }
     
+    /* Shrink the opponent rows even more on mobile screens */
+    #opponent-board .grid-row {
+        grid-template-columns: repeat(5, 25px);
+        gap: 3px;
+    }
+
     #opponent-board .tile {
-        width: 25px; /* Shrink opponent tracking map slightly on phone viewports */
+        width: 25px; 
         height: 25px;
     }
 }
@@ -165,4 +249,38 @@ h1 {
 .key-btn.wide-key {
     max-width: 65px;
     font-size: 0.85rem;
+}
+#game-screen h1, h2{
+    font-family: "NYTKarnakCondensed";
+    font-size: 4.5em;
+    margin: 0%;
+}
+#game-screen p{
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+#leave-btn {
+    font-family: 'TurdleFont', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #3a2424; /* Subtle dark red */
+    color: #ff9494;            /* Soft red text */
+    border: 1px solid #5a3b3b;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 10px auto 20px auto;
+    display: block;
+    transition: all 0.2s ease;
+}
+
+#leave-btn:hover {
+    background-color: #4e3030;
+    transform: translateY(-1px);
+}
+
+#leave-btn:active {
+    transform: translateY(1px);
 }

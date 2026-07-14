@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turdle</title>
     <link rel="stylesheet" href="style.css" />
+    <link href="https://db.onlinewebfonts.com/c/4789cf828c01b22acb9b2b73ee91aa0d?family=NYTKarnakCondensed" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   </head>
   <body>
+    <canvas id="bg-canvas"></canvas>
+
     <div id="lobby-screen">
-      <h1>🐢 Turdle Multiplayer</h1>
-      <button id="create-btn">Create Private Burrow</button>
+      <h1>Turdle</h1>
+      <button id="create-btn">Create Private Room</button>
       <p>— OR —</p>
       <input
         type="text"
@@ -18,12 +21,14 @@
         placeholder="Enter 4-Letter Code"
         maxlength="4"
       />
-      <button id="join-btn">Join Burrow</button>
+      <button id="join-btn">Join Room</button>
     </div>
 
     <div id="game-screen" style="display: none;">
-        <h2>Burrow Code: <span id="display-room-code"></span></h2>
+        <h2>Room Code: <span id="display-room-code"></span></h2>
         <p id="status-message">Waiting for an opponent to hop in...</p>
+
+        <button id="leave-btn">Leave Room</button>
         
         <div class="arena">
             <div class="board-container">
